@@ -1,3 +1,5 @@
+#!/bin/sh
+
 WEBHOOK_URL="$(cat /root/webhook_url)"
 
 timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
