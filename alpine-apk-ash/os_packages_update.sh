@@ -12,6 +12,7 @@ fi
 WEBHOOK_URL="$(cat $WEBHOOK_URL_FILE)"
 
 apk add curl
+apk add coreutils
 
 send_message() {
 	local timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
