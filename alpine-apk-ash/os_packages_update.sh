@@ -39,5 +39,5 @@ run_command() {
 send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
 run_command "apk update"
 run_command "apk upgrade"
-send_message "running reboot command. A rebooot successful message should display once it has rebooted"
+send_message "running reboot command. Hopefully the reboot will be successful"
 reboot
