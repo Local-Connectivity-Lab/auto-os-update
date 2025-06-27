@@ -12,11 +12,11 @@ This is how I did the alpine one at least
 
 - copy `os_packages_update.sh` to `/root/`
 - chmod +x it
-- create a file somewhere, lets say `/root/` and call it `workflow_url`
+- create a file somewhere, lets say `/root/` and call it `webhook_url`
 - Put the workflow URL in the file as one line. This is a discord workflow URL, it gives permissions to post in a certain discord channel that the workflow is in. 
-- run the command once to make sure everything is working `WORKFLOW_URL_FILE=/root/workflow_url ash /root/os_packages_update.sh`
+- run the command once to make sure everything is working `WEBHOOK_URL_FILE=/root/webhook_url ash /root/os_packages_update.sh`
 - Then put this in a crontab to run once per week. `crontab -e` should work, put a line at the bottom with a cron expression of "0 3 * * 6" but you can pick the hour (chose three in this case) and choose the day (chose the 6 day of the week in this case). The command should be the same command you ran above
-- put the reboot_verify.sh script in `/etc/local.d/` ans change the suffix from `.sh` to `.start`
+- put the `reboot_verify.sh` script in `/etc/local.d/` and change the suffix from `.sh` to `.start`
 - change `/root/webhook_url` in that file to the workflow file path that you have chosen. If that is it, then cool, I guess you do not have to modify anything.
 - chmod +x it
 - run `rc-update add local`
