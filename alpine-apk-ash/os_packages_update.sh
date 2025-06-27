@@ -4,10 +4,12 @@ set -e
 set -u
 set -x
 
-if [ -z "${WEBHOOK_URL:-}" ]; then
-  echo "WEBHOOK_URL needs to be set"
+if [ -z "${WEBHOOK_URL_FILE:-}" ]; then
+  echo "WEBHOOK_URL_FILE needs to be set"
   exit 1
 fi
+
+WEBHOOK_URL="$(cat $WEBHOOK_URL_FILE)"
 
 apk add curl
 
