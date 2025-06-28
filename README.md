@@ -10,14 +10,18 @@ In each folder contains two scripts. The os packages update script will be run o
 ## Installation
 This is how I did the alpine one at least
 
-- copy `os_packages_update.sh` to `/root/`
+
+- find the relevant folder that your OS corresponds to
+- copy `os_packages_update.sh` in said folder to `/root/` on the server
 - chmod +x it
 - create a file somewhere, lets say `/root/` and call it `webhook_url`
 - Put the workflow URL in the file as one line. This is a discord workflow URL, it gives permissions to post in a certain discord channel that the workflow is in. 
-- run the command once to make sure everything is working `WEBHOOK_URL_FILE=/root/webhook_url ash /root/os_packages_update.sh`
+- run the command once to make sure everything is working `WEBHOOK_URL_FILE=/root/webhook_url sh /root/os_packages_update.sh`
 - Then put this in a crontab to run once per week. `crontab -e` should work, put a line at the bottom with a cron expression of "0 3 * * 6" but you can pick the hour (chose three in this case) and choose the day (chose the 6 day of the week in this case). The command should be the same command you ran above
-- put the `reboot_verify.sh` script in `/etc/local.d/` and change the suffix from `.sh` to `.start`
-- change `/root/webhook_url` in that file to the workflow file path that you have chosen. If that is it, then cool, I guess you do not have to modify anything.
-- chmod +x it
-- run `rc-update add local`
+- For this step we want to run a command on start up to tell discord that the server is up. This will vary depending on the OS
+  - On alpine: put the `reboot_verify.sh` script in `/etc/local.d/` and change the suffix from `.sh` to `.start`. Then run `rc-update add local`
+  - On Ubuntu, you can just add a line to the crontab (so run `crontab -e` again) `@reboot bash /root/reboot_verify.sh`
+
+- In the reboot file, change `/root/webhook_url` to the workflow file path that you have chosen. If that is it, then cool, I guess you do not have to modify anything.
+- chmod +x the reboot verify script
 - Test a reboot to see if the discord message works

@@ -5,10 +5,12 @@ set -u
 set -o pipefail
 set -x
 
-if [[ ! -v WEBHOOK_URL ]]; then
+if [[ ! -v WEBHOOK_URL_FILE ]]; then
   echo "WEBHOOK_URL needs to be set"
   exit 1
 fi
+
+WEBHOOK_URL="$(cat $WEBHOOK_URL_FILE)"
 
 send_message() {
 	local timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
@@ -30,11 +32,12 @@ run_command() {
 
 	eval "$message"
 
-        send_message "\`$message\` succeeded"
+    send_message "\`$message\` succeeded"
 }
 
-send_message "Initiating update sequence for penguin <@405064409396805632>"
+send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
 run_command "sudo apt update"
 run_command "sudo apt upgrade -y"
 run_command "sudo apt autoremove -y"
-send_message "Now make sure this server is shut down"
+send_message "running reboot command. Hopefully the reboot will be successful"
+reboot

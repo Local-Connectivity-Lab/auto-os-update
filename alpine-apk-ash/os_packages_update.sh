@@ -34,7 +34,7 @@ run_command() {
 
 	eval "$message"
 
-        send_message "\`$message\` succeeded"
+    send_message "\`$message\` succeeded"
 }
 
 send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
