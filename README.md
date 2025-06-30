@@ -13,7 +13,7 @@ This is how I did the alpine one at least
 
 - copy `os_packages_update.sh` file to `/root/` on the server
 - chmod +x it
-- create a file somewhere, lets say `/root/` and call it `software_update_discord_webhook_url`
+- create a file `software_update_discord_webhook_url` in `/root/`
 - Put the workflow URL in the file as one line. This is a discord workflow URL, it gives permissions to post in a certain discord channel that the workflow is in. 
 - If you are on Alpine, install coreutils or else the timestamp will not show the miliseconds correctly.
 - Run the command once to make sure everything is working `WEBHOOK_URL_FILE=software_update_discord_webhook_url sh /root/os_packages_update.sh`. Note, the last reboot message will not show up on  discord yet.
