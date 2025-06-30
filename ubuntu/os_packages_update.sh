@@ -5,32 +5,37 @@ set -u
 set -o pipefail
 set -x
 
-if [[ ! -v WEBHOOK_URL_FILE ]]; then
-  echo "WEBHOOK_URL needs to be set"
+if [ -z "$WEBHOOK_URL_FILE" ]; then
+  echo "WEBHOOK_URL_FILE needs to be set as an env var"
   exit 1
 fi
 
-WEBHOOK_URL="$(cat $WEBHOOK_URL_FILE)"
+if [ ! -s "$WEBHOOK_URL_FILE" ]; then
+  echo "$WEBHOOK_URL_FILE does not exist or is empty"
+  exit 1
+fi
+
+WEBHOOK_URL="$(cat "$WEBHOOK_URL_FILE")"
 
 send_message() {
-	local timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
+        local timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
 
-	local response=$(curl -s -w "\n%{http_code}" -H "Content-Type: application/json" -X POST -d "{\"content\": \"[$timestamp] $1\"}" $WEBHOOK_URL)
-	local body=$(echo "$response" | sed '$d')
-	local status=$(echo "$response" | tail -n1)
+        local response=$(curl -s -w "\n%{http_code}" -H "Content-Type: application/json" -X POST -d "{\"content\": \"[$timestamp] $1\"}" $WEBHOOK_URL)
+        local body=$(echo "$response" | sed '$d')
+        local status=$(echo "$response" | tail -n1)
 
-	if [ "$status" -ne 204 ]; then
-		curl -s -H "Content-Type: application/json" -X POST -d "{\"content\": \"Error trying to send message\"}" $WEBHOOK_URL
-  		exit 1
-	fi
+        if [ "$status" -ne 204 ]; then
+                curl -s -H "Content-Type: application/json" -X POST -d "{\"content\": \"Error trying to send message\"}" $WEBHOOK_URL
+                exit 1
+        fi
 }
 
 run_command() {
-	local message="$1"
+        local message="$1"
 
-	send_message "running \`$message\`..."
+        send_message "running \`$message\`..."
 
-	eval "$message"
+        eval "$message"
 
     send_message "\`$message\` succeeded"
 }
@@ -39,5 +44,6 @@ send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
 run_command "sudo apt update"
 run_command "sudo apt upgrade -y"
 run_command "sudo apt autoremove -y"
-send_message "running reboot command. Hopefully the reboot will be successful"
+touch /root/planned_update_flag
+send_message "Running reboot command. If a 'reboot successful' message does not appear after this, something whent wrong on reboot"
 reboot
