@@ -5,18 +5,7 @@ set -u
 set -o pipefail
 set -x
 
-if [ -z "$WEBHOOK_URL_FILE" ]; then
-  echo "WEBHOOK_URL_FILE needs to be set as an env var"
-  exit 1
-fi
-
-if [ ! -s "$WEBHOOK_URL_FILE" ]; then
-  echo "$WEBHOOK_URL_FILE does not exist or is empty"
-  exit 1
-fi
-
-WEBHOOK_URL="$(cat "$WEBHOOK_URL_FILE")"
-
+WEBHOOK_URL="$(cat /root/software_update_discord_webhook_url)"
 
 if [ -f /root/planned_update_flag ]; then
   rm /root/planned_update_flag
