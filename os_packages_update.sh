@@ -1,5 +1,3 @@
-#!/bin/bash
-
 set -e
 set -u
 set -o pipefail
@@ -41,9 +39,17 @@ run_command() {
 }
 
 send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
-run_command "sudo apt update"
-run_command "sudo apt upgrade -y"
-run_command "sudo apt autoremove -y"
+if grep -qi 'ubuntu' /etc/os-release; then
+    run_command "sudo apt update"
+    run_command "sudo apt upgrade -y"
+    run_command "sudo apt autoremove -y"
+elif grep -qi 'alpine' /etc/os-release; then
+    run_command "apk update"
+    run_command "apk upgrade"
+else
+    echo "Unknown OS"
+    exit 1
+fi
 touch /root/planned_update_flag
 send_message "Running reboot command. If a 'reboot successful' message does not appear after this, something whent wrong on reboot"
 reboot
