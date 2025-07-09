@@ -39,7 +39,7 @@ run_command() {
 }
 
 send_message "Initiating update sequence for $(hostname) <@405064409396805632>"
-if grep -qi 'ubuntu' /etc/os-release; then
+if grep -qi 'ubuntu' /etc/os-release || grep -qi 'id=debian' /etc/os-release; then
     run_command "sudo apt update"
     run_command "sudo apt upgrade -y"
     run_command "sudo apt autoremove -y"
