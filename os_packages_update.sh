@@ -57,7 +57,7 @@ fi
 
 touch $UPDATE_FLAG_PATH
 send_message "Running reboot command. If a 'reboot successful' message does not appear after this, something whent wrong on reboot"
-if [ "$USER" = "root" ]; then
+if [ $(pwd) = "/root" ]; then
   reboot
 else
   sudo reboot
