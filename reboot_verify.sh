@@ -1,14 +1,12 @@
-#!/bin/sh
-
 set -e
 set -u
 set -o pipefail
 set -x
 
-WEBHOOK_URL="$(cat /root/software_update_discord_webhook_url)"
+WEBHOOK_URL="$(cat ./software_update_discord_webhook_url)"
 
-if [ -f /root/planned_update_flag ]; then
-  rm /root/planned_update_flag
+if [ -f ./planned_update_flag ]; then
+  rm ./planned_update_flag
 else
   exit 0
 fi
