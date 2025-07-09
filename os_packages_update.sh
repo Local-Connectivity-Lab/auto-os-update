@@ -3,21 +3,7 @@ set -u
 set -o pipefail
 set -x
 
-if [ -z "$WEBHOOK_URL_FILE" ]; then
-  echo "WEBHOOK_URL_FILE needs to be set as an env var"
-  exit 1
-fi
-if [ ! -s "$WEBHOOK_URL_FILE" ]; then
-  echo "$WEBHOOK_URL_FILE does not exist or is empty"
-  exit 1
-fi
-
-if [ -z "$UPDATE_FLAG_PATH" ]; then
-  echo "UPDATE_FLAG_PATH needs to be set as an env var"
-  exit 1
-fi
-
-WEBHOOK_URL="$(cat "$WEBHOOK_URL_FILE")"
+WEBHOOK_URL="$(cat ./software_update_discord_webhook_url)"
 
 send_message() {
         local timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
@@ -55,7 +41,7 @@ else
     exit 1
 fi
 
-touch $UPDATE_FLAG_PATH
+touch ./planned_update_flag
 send_message "Running reboot command. If a 'reboot successful' message does not appear after this, something whent wrong on reboot"
 if [ $(pwd) = "/root" ]; then
   reboot
