@@ -54,6 +54,11 @@ else
     echo "Unknown OS"
     exit 1
 fi
+
 touch $UPDATE_FLAG_PATH
 send_message "Running reboot command. If a 'reboot successful' message does not appear after this, something whent wrong on reboot"
-reboot
+if [ "$USER" = "root" ]; then
+  reboot
+else
+  sudo reboot
+fi
