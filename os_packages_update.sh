@@ -3,7 +3,7 @@ set -u
 set -o pipefail
 set -x
 
-exec > /var/log/reboot_verify.log 2>&1
+exec > /var/log/os_packages_update.log 2>&1
 
 WEBHOOK_URL="$(cat ./software_update_discord_webhook_url)"
 
