@@ -10,7 +10,7 @@ There are two scripts. The os packages update script will be run on a cron proba
 This is how I did the alpine one at least
 
 - First establish the home directory on the server. If you are the root user, it will be `/root`. If you are logged in as another user, it will be `/home/<your_username>`
-- copy `os_packages_update.sh` file to the home dit on the server. If you are using debian or ubuntu, put a line at the top `#!/bin/bash`. If you are on alpine put this line at the top `#!/bin/sh`
+- copy `os_packages_update.sh` file to the home dir on the server. If you are using debian or ubuntu, put a line at the top `#!/bin/bash`. If you are on alpine put this line at the top `#!/bin/sh`
 - chmod +x it
 - create a file `software_update_discord_webhook_url` in the home dir.
 - Put the workflow URL in the file as one line. This is a discord workflow URL, it gives permissions to post in a certain discord channel that the workflow is in. 
