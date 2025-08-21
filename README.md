@@ -1,4 +1,3 @@
-# scn-automation
 Currently I have put scripts in here that will be run automatically on a schedule on a host itself. For example, backups and software updates. 
 
 There is a trade off between automation and availability for example if a service goes down because it was not ready for a software update that happened. A mitigation to this is to have an operator be alerted on their phone when an upgrade does happen so at least they are aware when it does happen so if people complain to them, they can remember they got notified that an update happened. I have implemented this as a discord
