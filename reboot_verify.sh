@@ -1,17 +1,28 @@
+#!/bin/bash
+
 set -e
 set -u
 set -o pipefail
-set -x
 
-exec > /var/log/reboot_verify.log 2>&1
+exec >> /var/log/os_packages_update.log 2>&1
 
-WEBHOOK_URL="$(cat ./software_update_discord_webhook_url)"
+if [ -z "${BUCKET:-}" ]; then
+  echo "Error: Environment variable BUCKET is not set"
+  exit 1
+fi
 
-if [ -f ./planned_update_flag ]; then
-  rm ./planned_update_flag
+if [ -z "${API_TOKEN:-}" ]; then
+  echo "Error: Environment variable API_TOKEN is not set"
+  exit 1
+fi
+
+if [ -f ./.planned_update_flag ]; then
+  rm ./.planned_update_flag
 else
   exit 0
 fi
 
-timestamp=$(date +'%Y-%m-%dT%H:%M:%S.%3N%:z')
-curl -s -H "Content-Type: application/json" -X POST -d "{\"content\": \"[$timestamp] Reboot successful\"}" $WEBHOOK_URL
+curl --request POST "https://influxdb.infra.seattlecommunitynetwork.org/api/v2/write?org=scn&bucket=$BUCKET&precision=s" \
+  --header "Authorization: Token $API_TOKEN" \
+  --header "Content-Type: text/plain; charset=utf-8" \
+  --data-binary "measurement success=1"
